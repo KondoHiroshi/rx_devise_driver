@@ -93,7 +93,7 @@ class ma24126a_controller(object):
         th2 = threading.Thread(target=self.change_capt)
         th2.setDaemon(True)
         th2.start()
-        th3 = threading.Thread(target=self.change_ave)
+        th3 = threading.Thread(target=self.change_avemode)
         th3.setDaemon(True)
         th3.start()
 
