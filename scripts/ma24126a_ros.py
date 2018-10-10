@@ -65,7 +65,7 @@ class ma24126a_controller(object):
             self.pm.change_capt(self.capt)
 
             msg = Float64()
-            msg = float(self.pm.check_capt())
+            msg.data = float(self.pm.check_capt())
             self.pub_change_capt.publish(msg)
 
             self.capt_flag = 0
@@ -77,8 +77,10 @@ class ma24126a_controller(object):
                 time.sleep(self.rate)
                 continue
 
+            self.pm.change_avemode(self.ave)
+
             msg = Float64()
-            msg = float(self.pm.check_avemode())
+            msg.data = float(self.pm.check_avemode())
             self.pub_change_avemode.publish(msg)
 
             self.ave_flag = 0
