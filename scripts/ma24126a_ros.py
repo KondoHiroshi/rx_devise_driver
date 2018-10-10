@@ -74,11 +74,11 @@ class ma24126a_controller(object):
             if self.power_flag == 0:
                 time.sleep(self.rate)
                 continue
-
+                print("a")
                 msg = Float64()
                 msg.data = float(self.pm.quary(b"PWR?\n"))
                 self.pub_power.publish(msg)
-
+                print("b")
             self.power_flag = 0
             continue
 
