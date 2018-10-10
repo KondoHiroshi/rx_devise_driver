@@ -79,6 +79,7 @@ class ma24126a_controller(object):
                 msg = Float64()
                 msg.data = float(self.pm.quary(b"PWR?\n"))
                 self.pub_power.publish(msg)
+                continue
 
             self.power_flag = 0
             continue
