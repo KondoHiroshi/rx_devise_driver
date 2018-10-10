@@ -27,7 +27,7 @@ class ma24126a_controller(object):
         self.sub_change_avemode = rospy.Subscriber("topic_sub_change_avemode", Float64, self.ave_switch)
         self.pub_change_avemode = rospy.Publisher("topic_pub_change_avemode", Float64, queue_size = 1)
         self.sub_change_capt = rospy.Subscriber("topic_sub_change_capt", Float64, self.capt_switch)
-        self.pub_change_cpat = rospy.Publisher("topic_pub_change_capt", Float64, queue_size = 1)
+        self.pub_change_capt = rospy.Publisher("topic_pub_change_capt", Float64, queue_size = 1)
 
     def power_switch(self,q):
         self.power_flag = q.data
