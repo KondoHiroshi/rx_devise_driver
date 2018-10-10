@@ -24,7 +24,7 @@ class ma24126a_controller(object):
         self.capt_flag = 0
         self.avemode_flag = 0
 
-        self.pub_zeroset = rospy.Subscriber("topic_pub_zeroset", String, queue_size = 1)
+        self.pub_zeroset = rospy.Publisher("topic_pub_zeroset", String, queue_size = 1)
         self.sub_zeroset = rospy.Subscriber("topic_sub_zeroset", Float64, self.zero_set_switch)
         self.pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
         self.sub_power = rospy.Subscriber("topic_sub_power", Float64, self.power_switch)
