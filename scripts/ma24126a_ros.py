@@ -76,11 +76,9 @@ class ma24126a_controller(object):
                 continue
 
             while True:
-                print("a")
                 msg = Float64()
                 msg.data = float(self.pm.quary(b"PWR?\n"))
                 self.pub_power.publish(msg)
-                print("b")
 
             self.power_flag = 0
             continue
