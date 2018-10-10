@@ -78,9 +78,8 @@ class ma24126a_controller(object):
             while True:
                 msg = Float64()
                 msg.data = float(self.pm.quary(b"PWR?\n"))
-                time.sleep(1)
                 self.pub_power.publish(msg)
-                continue
+                time.sleep(1)
 
             self.power_flag = 0
             continue
