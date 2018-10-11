@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+avemode#! /usr/bin/env python3
 
 import rospy
 from std_msgs.msg import Float64
@@ -42,7 +42,7 @@ class ma24126a_controller(object):
         self.zero_set_flag = q.data
         return
 
-    def zero_close(self,q):
+    def close_switch(self,q):
         self.close_flag = q.data
         return
 
@@ -56,7 +56,7 @@ class ma24126a_controller(object):
         return
 
     def avemode_switch(self,q):
-        self.ave = q.data
+        self.avemode = q.data
         self.avemode_flag = 1
         return
 
@@ -124,7 +124,7 @@ class ma24126a_controller(object):
                 time.sleep(self.rate)
                 continue
 
-            self.pm.change_avemode(self.ave)
+            self.pm.change_avemode(self.avemode)
 
             msg = Float64()
             msg.data = float(self.pm.check_avemode())
@@ -146,6 +146,9 @@ class ma24126a_controller(object):
         th4 = threading.Thread(target=self.zero_set)
         th4.setDaemon(True)
         th4.start()
+        th5 = threading.Thread(target=self.close)
+        th5.setDaemon(True)
+        th5.start()
 
 if __name__ == "__main__" :
     rospy.init_node("ma24126a")
