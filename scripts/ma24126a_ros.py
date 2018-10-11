@@ -75,12 +75,14 @@ class ma24126a_controller(object):
                 time.sleep(self.rate)
                 continue
 
-            while True:
-                msg = Float64()
-                msg.data = float(self.pm.quary(b"PWR?\n"))
-                self.pub_power.publish(msg)
+            if self.power_flag == 1:
+                while True:
+                    msg = Float64()
+                    msg.data = float(self.pm.quary(b"PWR?\n"))
+                    self.pub_power.publish(msg)
 
-            self.power_flag = 0
+            else:
+                self.power_flag = 0
             continue
 
     def change_capt(self):
