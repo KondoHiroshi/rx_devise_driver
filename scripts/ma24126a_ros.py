@@ -72,7 +72,6 @@ class ma24126a_controller(object):
     def power(self):
         while not rospy.is_shutdown():
             if self.power_flag == 0:
-                time.sleep(self.rate)
                 continue
 
             if self.power_flag == 1:
