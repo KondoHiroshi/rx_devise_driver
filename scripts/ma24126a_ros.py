@@ -19,13 +19,16 @@ class ma24126a_controller(object):
         self.pm = pymeasure.usbpm.open("ma24126a")
         self.rate = rospy.get_param("~rate")
 
-        self.zero_set_flag =0
+        self.zero_set_flag = 0
+        self.close_flag = 0
         self.power_flag = 0
         self.capt_flag = 0
         self.avemode_flag = 0
 
         self.pub_zeroset = rospy.Publisher("topic_pub_zeroset", String, queue_size = 1)
         self.sub_zeroset = rospy.Subscriber("topic_sub_zeroset", Float64, self.zero_set_switch)
+        self.pub_close = rospy.Publisher("topic_pub_close", String, queue_size = 1)
+        self.sub_close = rospy.Subscriber("topic_sub_close", Float64, self.close_switch)
         self.pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
         self.sub_power = rospy.Subscriber("topic_sub_power", Float64, self.power_switch)
         self.sub_change_avemode = rospy.Subscriber("topic_sub_change_avemode", Float64, self.avemode_switch)
@@ -37,6 +40,10 @@ class ma24126a_controller(object):
 
     def zero_set_switch(self,q):
         self.zero_set_flag = q.data
+        return
+
+    def zero_close(self,q):
+        self.close_flag = q.data
         return
 
     def power_switch(self,q):
@@ -79,8 +86,22 @@ class ma24126a_controller(object):
                 msg.data = float(self.pm.quary(b"PWR?\n"))
                 self.pub_power.publish(msg)
                 continue
-
             continue
+
+    def close(self):
+        while not rospy.is_shutdown():
+            if self.close_flag == 0:
+                continue
+
+            self.pm.close()
+
+            msg = String()
+            msg.data = "CLOSED"
+            self.pub_close.publish(msg)
+
+            self.close_flag = 0
+            continue
+
 
     def change_capt(self):
         while not rospy.is_shutdown():
