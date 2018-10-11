@@ -69,9 +69,6 @@ class ma24126a_controller(object):
             self.zero_set_flag = 0
             continue
 
-    def onoff_power(self):
-        if
-
     def power(self):
         while not rospy.is_shutdown():
             if self.power_flag == 0:
