@@ -69,6 +69,9 @@ class ma24126a_controller(object):
             self.zero_set_flag = 0
             continue
 
+    def onoff_power(self):
+        if
+
     def power(self):
         while not rospy.is_shutdown():
             if self.power_flag == 0:
@@ -80,9 +83,8 @@ class ma24126a_controller(object):
                     msg = Float64()
                     msg.data = float(self.pm.quary(b"PWR?\n"))
                     self.pub_power.publish(msg)
+                continue
 
-            else:
-                self.power_flag = 0
             continue
 
     def change_capt(self):
