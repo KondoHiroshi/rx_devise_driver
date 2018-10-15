@@ -18,13 +18,13 @@ class ma24126a_controller(object):
 
         self.pm = pymeasure.usbpm.open("ma24126a")
         self.rate = rospy.get_param("~rate")
-
+#flag
         self.zero_set_flag = 0
         self.close_flag = 0
         self.power_flag = 0
         self.capt_flag = 0
         self.avemode_flag = 0
-
+#pubsub
         self.pub_zeroset = rospy.Publisher("topic_pub_zeroset", String, queue_size = 1)
         self.sub_zeroset = rospy.Subscriber("topic_sub_zeroset", Float64, self.zero_set_switch)
         self.pub_close = rospy.Publisher("topic_pub_close", String, queue_size = 1)
@@ -61,6 +61,7 @@ class ma24126a_controller(object):
         return
 
 #main methond
+
     def zero_set(self):
         while not rospy.is_shutdown():
             if self.zero_set_flag == 0:
@@ -70,7 +71,7 @@ class ma24126a_controller(object):
             self.pm.zero_set()
 
             msg = String()
-            msg.data = "OK"
+            msg.data = "zero set has done"
             self.pub_zeroset.publish(msg)
 
             self.zero_set_flag = 0
@@ -132,6 +133,8 @@ class ma24126a_controller(object):
 
             self.avemode_flag = 0
             continue
+
+#thread
 
     def start_thread(self):
         th1 = threading.Thread(target=self.power)
