@@ -2,7 +2,7 @@
 
 import sys
 import time
-sys.path.append("/home/amigos/ros/src")
+sys.path.append("/home/amigos/ros/src/pymeasure2")
 import pymeasure
 
 import rospy
