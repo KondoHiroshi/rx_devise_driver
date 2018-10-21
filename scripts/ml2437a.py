@@ -2,6 +2,7 @@
 
 import sys
 import time
+sys.path.append("/home/amigos/ros/src")
 import pymeasure
 
 import rospy
