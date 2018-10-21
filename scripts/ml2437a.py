@@ -26,7 +26,7 @@ class ml2437a_driver(object):
         self.com.close()
         power = float(ret)
         return power
-
+"""
     def set_ave(self, ch=1, mode, ave_num):
         self.com.open()
         self.com.send("AVE A, %s, %d" %(mode, ave_num))
@@ -41,7 +41,7 @@ class ml2437a_driver(object):
         self.com.close()
         ave = float(ret)
         return ave
-
+"""
 
 def str2list(param):
     return param.strip('[').strip(']').split(',')
