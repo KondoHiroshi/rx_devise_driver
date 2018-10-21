@@ -3,7 +3,7 @@
 import sys
 import time
 sys.path.append("/home/amigos/ros/src/")
-import pymeasure
+import pymeasure2
 
 import rospy
 import std_msgs
