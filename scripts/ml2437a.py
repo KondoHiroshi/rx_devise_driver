@@ -3,7 +3,7 @@
 import sys
 import time
 sys.path.append("/home/amigos/ros/src/")
-import pymeasure2
+from pymeasure2 import pymeasure
 
 import rospy
 import std_msgs
@@ -15,7 +15,7 @@ class ml2437a_driver(object):
     def __init__(self, IP='192.168.100.19', GPIB=1):
         self.IP = IP
         self.GPIB = GPIB
-        self.com = pymeasure2.pymeasure.gpib_prologix(self.IP, self.GPIB)
+        self.com = pymeasure2.gpib_prologix(self.IP, self.GPIB)
 
     def measure(self, ch=1, resolution=3):
         self.com.open()
