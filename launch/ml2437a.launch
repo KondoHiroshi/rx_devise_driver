@@ -1,6 +1,6 @@
 <launch>
   <node pkg="rx_device_driver" name="ml2437a" type="ml2437a.py" required="true" output="screen">
-    <param name="~host" value="192.168.100.19" />
+    <param name="~host" value="192.168.100.44" />
     <param name="~port" value="13" />
     <param name="~rate" value="1" />
     <param name="~topic1" value="[ml2437a_ch1, 1]" />
