@@ -17,8 +17,8 @@ class ml2437a_driver(object):
         self.GPIB = GPIB
         self.com = pymeasure.gpib_prologix(self.IP, self.GPIB)
         self.com.open()
-                self.com.send('CHUNIT %d, DBM' %(ch))
-                self.com.send('CHRES %d, %d' %(ch, resolution))
+        self.com.send('CHUNIT %d, DBM' %(ch))
+        self.com.send('CHRES %d, %d' %(ch, resolution))
 
     def measure(self, ch=1, resolution=3):
         self.com.send('o %d' %(ch))
