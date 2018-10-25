@@ -120,13 +120,13 @@ class ma24126a_controller(object):
             if self.capt_flag == 0:
                 time.sleep(self.rate)
                 continue
-            ptint("aaa")
+            print("aaa")
             self.pm.change_capt(self.capt)
-            ptint("bbb")
+            print("bbb")
             msg = Float64()
             msg.data = float(self.pm.check_capt())
             self.pub_change_capt.publish(msg)
-            ptint("ccc")
+            print("ccc")
             self.capt_flag = 0
             continue
 
