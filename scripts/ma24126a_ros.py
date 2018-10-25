@@ -22,8 +22,9 @@ class ma24126a_controller(object):
         self.zero_set_flag = 0
         self.close_flag = 0
         self.power_flag = 0
-        self.capt_flag = 0
         self.avemode_flag = 0
+        self.avetyp_flag = 0
+        self.capt_flag = 0
 #pubsub
         self.pub_zeroset = rospy.Publisher("topic_pub_zeroset", String, queue_size = 1)
         self.sub_zeroset = rospy.Subscriber("topic_sub_zeroset", Float64, self.zero_set_switch)
@@ -33,8 +34,11 @@ class ma24126a_controller(object):
         self.sub_power = rospy.Subscriber("topic_sub_power", Float64, self.power_switch)
         self.sub_change_avemode = rospy.Subscriber("topic_sub_change_avemode", Float64, self.avemode_switch)
         self.pub_change_avemode = rospy.Publisher("topic_pub_change_avemode", Float64, queue_size = 1)
+        self.sub_change_avetyp = rospy.Subscriber("topic_sub_change_avetyp", Float64, self.avetyp_switch)
+        self.pub_change_avetyp = rospy.Publisher("topic_pub_change_avetyp", Float64, queue_size = 1)
         self.sub_change_capt = rospy.Subscriber("topic_sub_change_capt", Float64, self.capt_switch)
         self.pub_change_capt = rospy.Publisher("topic_pub_change_capt", Float64, queue_size = 1)
+
 
 #flag
 
@@ -58,6 +62,11 @@ class ma24126a_controller(object):
     def avemode_switch(self,q):
         self.avemode = q.data
         self.avemode_flag = 1
+        return
+
+    def avetyp_switch(self,q):
+        self.avetyp = q.data
+        self.avetyp_flag = 1
         return
 
 #main methond
@@ -134,6 +143,21 @@ class ma24126a_controller(object):
             self.avemode_flag = 0
             continue
 
+    def change_avetyp(self):
+        while not rospy.is_shutdown():
+            if self.avetyp_flag == 0:
+                time.sleep(self.rate)
+                continue
+
+            self.pm.change_avetyp(self.avetyp)
+
+            msg = Float64()
+            msg.data = float(self.pm.check_avetyp())
+            self.pub_change_avetyp.publish(msg)
+
+            self.avetyp_flag = 0
+            continue
+
 #thread
 
     def start_thread(self):
@@ -152,6 +176,9 @@ class ma24126a_controller(object):
         th5 = threading.Thread(target=self.close)
         th5.setDaemon(True)
         th5.start()
+        th6 = threading.Thread(target=self.change_avetyp)
+        th6.setDaemon(True)
+        th6.start()
 
 if __name__ == "__main__" :
     rospy.init_node("ma24126a")
