@@ -80,4 +80,5 @@ while not rospy.is_shutdown():
         msg.data = ret_list[i]
         pub.publish(msg)
     continue
-    print("aaa")
+    f = open("/home/amigos/text.txt","w")
+    f.close()
