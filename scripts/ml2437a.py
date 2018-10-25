@@ -12,7 +12,7 @@ from std_msgs.msg import Float64
 
 class ml2437a_driver(object):
 
-    def __init__(self, IP='192.168.100.44', GPIB=13, ch=1, resolution=3):
+    def __init__(self, IP='192.168.100.44', GPIB=13):
         self.IP = IP
         self.GPIB = GPIB
         self.com = pymeasure.gpib_prologix(self.IP, self.GPIB)
@@ -80,3 +80,4 @@ while not rospy.is_shutdown():
         msg.data = ret_list[i]
         pub.publish(msg)
     continue
+    print("aaa")
