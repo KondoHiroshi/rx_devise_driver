@@ -93,7 +93,7 @@ class ma24126a_controller(object):
 
             while self.power_flag == 1:
                 msg = Float64()
-                if type(self.pm.quary(b"PWR?\n")) != int:
+                if type(self.pm.quary(b"PWR?\n")) != str:
                     msg.data = float(self.pm.quary(b"PWR?\n"))
                     self.pub_power.publish(msg)
                 else : pass
