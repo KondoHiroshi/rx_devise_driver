@@ -95,7 +95,7 @@ class ma24126a_controller(object):
             while self.power_flag == 1:
                 msg = Float64()
                 ret = self.pm.quary(b"PWR?\n")
-                time.sleep(0.05)
+                time.sleep(0.1)
                 try:
                     msg.data = float(ret)
                     self.pub_power.publish(msg)
