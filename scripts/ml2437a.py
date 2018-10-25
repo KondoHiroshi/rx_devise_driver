@@ -22,7 +22,7 @@ class ml2437a_driver(object):
     def measure(self, ch=1, resolution=3):
         self.com.open()
         self.com.send('o %d' %(ch))
-        time.sleep(0.1)
+        time.sleep(0.05)
         ret = self.com.readline()
         self.com.close()
         power = float(ret)
