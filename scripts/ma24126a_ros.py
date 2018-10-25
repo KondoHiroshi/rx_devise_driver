@@ -32,6 +32,7 @@ class ma24126a_controller(object):
         self.sub_close = rospy.Subscriber("topic_sub_close", Float64, self.close_switch)
         self.pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
         self.sub_power = rospy.Subscriber("topic_sub_power", Float64, self.power_switch)
+        self.pub_power_error = rospy.Publisher("topic_pub_power_error", String, queue_size = 1)
         self.sub_change_avemode = rospy.Subscriber("topic_sub_change_avemode", Float64, self.avemode_switch)
         self.pub_change_avemode = rospy.Publisher("topic_pub_change_avemode", Float64, queue_size = 1)
         self.sub_change_avetyp = rospy.Subscriber("topic_sub_change_avetyp", Float64, self.avetyp_switch)
