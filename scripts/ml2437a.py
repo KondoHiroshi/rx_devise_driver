@@ -20,15 +20,15 @@ class ml2437a_driver(object):
 
     def measure(self, ch=1, resolution=3):
         self.com.open()
+        self.com.send('CHUNIT %d, DBM' %(ch))
+        self.com.send('CHRES %d, %d' %(ch, resolution))
         self.com.send('o %d' %(ch))
-        time.sleep(0.1)
+        time.sleep(0.01)
         ret = self.com.readline()
         self.com.close()
         power = float(ret)
         return power
 """
-        self.com.send('CHUNIT %d, DBM' %(ch))
-        self.com.send('CHRES %d, %d' %(ch, resolution))
     def set_ave(self, ch=1, mode, ave_num):
         self.com.open()
         self.com.send("AVE A, %s, %d" %(mode, ave_num))
