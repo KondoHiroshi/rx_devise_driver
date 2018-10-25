@@ -25,7 +25,7 @@ class ml2437a_driver(object):
         self.com.send('o %d' %(ch))
         time.sleep(0.01)
         ret = self.com.readline()
-        self.com.close()
+
         power = float(ret)
         return power
 """
@@ -80,5 +80,3 @@ while not rospy.is_shutdown():
         msg.data = ret_list[i]
         pub.publish(msg)
     continue
-    f = open("/home/amigos/text.txt","w")
-    f.close()
