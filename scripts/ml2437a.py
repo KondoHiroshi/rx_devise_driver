@@ -71,7 +71,7 @@ if __name__ == '__main__':
     pub_avemode_list = [rospy.Publisher(topic[topic_name_index], Float64, queue_size=1) \
                 for topic in topic_avemode_list if int(topic[onoff_index]) == 1]
 
-    onoff_list = [topic[topic_name_index] for topic in topic_list if int(topic[onoff_index]) == 1]
+    onoff_list = [topic[topic_name_index] for topic in topic_power_list if int(topic[onoff_index]) == 1]
 
     msg_power_list = [Float64() for i in range(ch_number)]
     msg_avemode_list = [String() for i in range(ch_number)]
