@@ -82,7 +82,7 @@ while not rospy.is_shutdown():
 
     ret_power_list = [pm.measure(ch=int(onoff[-1])) for onoff in onoff_list]
 
-    for pub, msg, ret, i in zip(pub_list, msg_list, ret_list, range(ch_number)):
+    for pub, msg, ret, i in zip(pub_power_list, msg_power_list, ret_power_list, range(ch_number)):
         msg.data = ret_power_list[i]
         pub.publish(msg)
     continue
