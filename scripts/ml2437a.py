@@ -27,7 +27,7 @@ class ml2437a_driver(object):
         power = float(ret)
         return power
 
-    def set_ave(self, ch=1, mode="OFF", ave_num=10):
+    def set_ave(self, ch=1, mode, ave_num=10):
 #mode:OFF,AUTO,MOV,RPT
         self.com.send("AVG A, %s, %d" %(mode, ave_num))
         self.com.close()
@@ -56,7 +56,8 @@ if __name__ == '__main__':
     host = rospy.get_param('~host')
     port = rospy.get_param('~port')
     rate = rospy.get_param('~rate')
-    topic_list = [str2list(rospy.get_param('~topic{}'.format(i+1))) for i in range(ch_number)]
+    topic_power_list = [str2list(rospy.get_param('~topic{}'.format(i+1))) for i in range(ch_number)]
+    topic_avemode_list = [str2list(rospy.get_param('~topic{}'.format(i+3))) for i in range(ch_number)]
 
     try:
         pm = ml2437a_driver(host, port)
@@ -64,16 +65,23 @@ if __name__ == '__main__':
         rospy.logerr("{e.strerror}. host={host}".format(**locals()))
         sys.exit()
 
-    pub_list = [rospy.Publisher(topic[topic_name_index], Float64, queue_size=1) \
-                for topic in topic_list if int(topic[onoff_index]) == 1]
+    pub_power_list = [rospy.Publisher(topic[topic_name_index], Float64, queue_size=1) \
+                for topic in topic_power_list if int(topic[onoff_index]) == 1]
+
+    pub_avemode_list = [rospy.Publisher(topic[topic_name_index], Float64, queue_size=1) \
+                for topic in topic_avemode_list if int(topic[onoff_index]) == 1]
+
     onoff_list = [topic[topic_name_index] for topic in topic_list if int(topic[onoff_index]) == 1]
-    msg_list = [Float64() for i in range(ch_number)]
+
+    msg_power_list = [Float64() for i in range(ch_number)]
+    msg_avemode_list = [String() for i in range(ch_number)]
+
 
 while not rospy.is_shutdown():
 
-    ret_list = [pm.measure(ch=int(onoff[-1])) for onoff in onoff_list]
+    ret_power_list = [pm.measure(ch=int(onoff[-1])) for onoff in onoff_list]
 
     for pub, msg, ret, i in zip(pub_list, msg_list, ret_list, range(ch_number)):
-        msg.data = ret_list[i]
+        msg.data = ret_power_list[i]
         pub.publish(msg)
     continue
