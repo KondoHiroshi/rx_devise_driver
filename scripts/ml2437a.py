@@ -27,13 +27,13 @@ class ml2437a_driver(object):
         power = float(ret)
         return power
 
-    def set_ave(self, ch=1, mode, ave_num):
+    def set_avemode(self, mode, ave_num, ch=1):
 #mode:OFF,AUTO,MOV,RPT
         self.com.send("AVG A, %s, %d" %(mode, ave_num))
         self.com.close()
         return
 
-    def get_ave(self, ch=1):
+    def get_avemode(self, ch=1):
         self.com.send("AVG? A")
         time.sleep(0.1)
         ret = self.com.readline()
