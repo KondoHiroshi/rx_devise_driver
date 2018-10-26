@@ -24,25 +24,23 @@ class ml2437a_driver(object):
         self.com.send('o %d' %(ch))
         time.sleep(0.01)
         ret = self.com.readline()
-
         power = float(ret)
         return power
-"""
-    def set_ave(self, ch=1, mode, ave_num):
-        self.com.open()
-        self.com.send("AVE A, %s, %d" %(mode, ave_num))
+
+    def set_ave(self, ch=1, mode="OFF", ave_num=10):
+#mode:OFF,AUTO,MOV,RPT
+        self.com.send("AVG A, %s, %d" %(mode, ave_num))
         self.com.close()
         return
 
     def get_ave(self, ch=1):
-        self.com.open()
-        self.com.send("AVE? A")
+        self.com.send("AVG? A")
         time.sleep(0.1)
         ret = self.com.readline()
         self.com.close()
         ave = float(ret)
         return ave
-"""
+
 
 def str2list(param):
     return param.strip('[').strip(']').split(',')
