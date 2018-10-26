@@ -8,6 +8,7 @@ import pymeasure
 import rospy
 import std_msgs
 from std_msgs.msg import Float64
+from std_msgs.msg import String
 
 
 class ml2437a_driver(object):
