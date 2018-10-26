@@ -57,7 +57,7 @@ if __name__ == '__main__':
     port = rospy.get_param('~port')
     rate = rospy.get_param('~rate')
     topic_power_list = [str2list(rospy.get_param('~topic{}'.format(i+1))) for i in range(ch_number)]
-#topic_avemode_list = [str2list(rospy.get_param('~topic{}'.format(i+3))) for i in range(ch_number)]
+    topic_avemode_list = [str2list(rospy.get_param('~topic{}'.format(i+3))) for i in range(ch_number)]
 
     try:
         pm = ml2437a_driver(host, port)
