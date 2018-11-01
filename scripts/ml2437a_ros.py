@@ -199,14 +199,14 @@ class ml2437a_deriver(object):
         return count
 
 
-while not rospy.is_shutdown():
-    ret = pm.measure()
-    msg.data = float(ret)
-    ctrl.pub_power.publish(msg)
-    continue
-
 if __name__ == "__main__" :
     rospy.init_node("ml2437a")
     ctrl = ml2437a_controller()
     pm = ml2437a_deriver()
     rospy.spin()
+
+while not rospy.is_shutdown():
+    ret = pm.measure()
+    msg.data = float(ret)
+    ctrl.pub_power.publish(msg)
+    continue
