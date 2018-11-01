@@ -39,7 +39,7 @@ class ml2437a_controller(object):
         msg.data = int(ret)
         self.pub_ave_count.publish(msg)
 
-class ml2437a_deriver(object):
+class ml2437a_driver(object):
 
     def __init__(self, IP='192.168.100.44', GPIB=13):
         self.IP = IP
