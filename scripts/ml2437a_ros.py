@@ -26,7 +26,7 @@ class ml2437a_controller(object):
         self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_onoff)
 
         while not rospy.is_shutdown():
-            ret = pm.measure()
+            ret = self.pm.measure()
             msg.data = float(ret)
             print("bbb")
             self.pub_power.publish(msg)
