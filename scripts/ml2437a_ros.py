@@ -22,9 +22,9 @@ class ml2437a_controller(object):
 
         self.pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
         self.sub_power = rospy.Subscriber("topic_sub_power", Float64, self.power)
-        self.pub.ave_onoff = rospy.Publisher("topic_pub_ave_onoff", Int32, queue_size = 1)
+        self.pub_ave_onoff = rospy.Publisher("topic_pub_ave_onoff", Int32, queue_size = 1)
         self.sub_ave_onoff = rospy.Subscriber("topic_sub_ave_onoff", Int32, self.ave_onoff)
-        self.pub.ave_count = rospy.Publisher("topic_pub_ave_count", Int32, queue_size = 1)
+        self.pub_ave_count = rospy.Publisher("topic_pub_ave_count", Int32, queue_size = 1)
         self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_onoff)
 
     def power(self):
