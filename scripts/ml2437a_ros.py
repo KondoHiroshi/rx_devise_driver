@@ -54,7 +54,7 @@ class ml2437a_deriver(object):
     def __init__(self, IP='192.168.100.1', GPIB=1):
         self.IP = IP
         self.GPIB = GPIB
-
+        self.com = pymeasure.gpib_prologix(self.IP, self.GPIB)
 
     def measure(self, ch=1, resolution=3):
         '''
@@ -78,7 +78,6 @@ class ml2437a_deriver(object):
         1. power: the power value [dBm]
             Type: float
         '''
-        self.com = pymeasure.gpib_prologix(self.IP, self.GPIB)
         self.com.open()
         self.com.send('CHUNIT %d, DBM' %(ch))
         self.com.send('CHRES %d, %d' %(ch, resolution))
