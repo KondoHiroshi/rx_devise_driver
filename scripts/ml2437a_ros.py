@@ -25,13 +25,6 @@ class ml2437a_controller(object):
         self.pub_ave_count = rospy.Publisher("topic_pub_ave_count", Int32, queue_size = 1)
         self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_onoff)
 
-        while not rospy.is_shutdown():
-            ret = self.pm.measure()
-            self.msg.data = float(ret)
-            print("bbb")
-            self.pub_power.publish(msg)
-            print("ccc")
-            continue
 
     def ave_onoff(self,q):
         self.pm.set_average_onoff(q.data)
@@ -47,16 +40,6 @@ class ml2437a_controller(object):
         self.pub_ave_count.publish(msg)
 
 class ml2437a_deriver(object):
-    '''
-    DESCRIPTION
-    ================
-    This class cntrols the ML2437A.
-    ARGUMENTS
-    ================
-    1. dev: device number
-        Type: int
-        Default: 1
-    '''
 
     def __init__(self, IP='192.168.100.44', GPIB=13):
         self.IP = IP
@@ -117,7 +100,7 @@ class ml2437a_deriver(object):
         ================
         Nothing.
         '''
-        self.com = pymeasure.gpib_prologix(self.IP, self.GPIB)
+
         self.com.open()
         if onoff == 1:
             self.com.send('AVG %s, RPT, 60' %(sensor))
@@ -142,7 +125,7 @@ class ml2437a_deriver(object):
             Number: 0 or 1
             Type: int
         '''
-        self.com = pymeasure.gpib_prologix(self.IP, self.GPIB)
+
         self.com.open()
         self.com.send('STATUS')
         ret = self.com.readline()
@@ -174,7 +157,7 @@ class ml2437a_deriver(object):
         ================
         Nothing.
         '''
-        self.com = pymeasure.gpib_prologix(self.IP, self.GPIB)
+
         self.com.open()
         self.com.send('AVG %s, RPT, %d' %(sensor, count))
         self.com.close()
@@ -195,7 +178,6 @@ class ml2437a_deriver(object):
         1. count: averaging counts
             Type: int
         '''
-        self.com = pymeasure.gpib_prologix(self.IP, self.GPIB)
         self.com.open()
         self.com.send('STATUS')
         ret = self.com.readline()
@@ -207,6 +189,14 @@ class ml2437a_deriver(object):
 if __name__ == "__main__" :
     rospy.init_node("ml2437a")
     ctrl = ml2437a_controller()
-    print("aaa")
+    pm = ml2437a_driver()
     pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
     rospy.spin()
+
+while not rospy.is_shutdown():
+    ret = pm.measure()
+    msg.data = float(ret)
+    print("bbb")
+    pub_power.publish(msg)
+    print("ccc")
+    continue
