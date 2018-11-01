@@ -19,7 +19,6 @@ class ml2437a_controller(object):
     def __init__(self):
 #self.pm = ML2437A.ml2437a()
 
-        self.pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
 #self.sub_power = rospy.Subscriber("topic_sub_power", Float64, self.power)
         self.pub_ave_onoff = rospy.Publisher("topic_pub_ave_onoff", Int32, queue_size = 1)
         self.sub_ave_onoff = rospy.Subscriber("topic_sub_ave_onoff", Int32, self.ave_onoff)
@@ -203,6 +202,7 @@ if __name__ == "__main__" :
     rospy.init_node("ml2437a")
     ctrl = ml2437a_controller()
     pm = ml2437a_deriver()
+    pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
     rospy.spin()
 
 while not rospy.is_shutdown():
