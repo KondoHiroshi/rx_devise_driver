@@ -27,7 +27,7 @@ class ml2437a_controller(object):
 
         while not rospy.is_shutdown():
             ret = self.pm.measure()
-            msg.data = float(ret)
+            self.msg.data = float(ret)
             print("bbb")
             self.pub_power.publish(msg)
             print("ccc")
@@ -37,7 +37,7 @@ class ml2437a_controller(object):
         self.pm.set_average_onoff(q.data)
 
         ret = self.quary_average_onoff()
-        self.msg.data = int(ret)
+        msg.data = int(ret)
         self.pub_ave_onoff.publish(msg)
 
     def ave_count(self,q):
