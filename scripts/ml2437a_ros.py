@@ -27,12 +27,6 @@ class ml2437a_controller(object):
         self.pub_ave_count = rospy.Publisher("topic_pub_ave_count", Int32, queue_size = 1)
         self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_onoff)
 
-    def power(self):
-        while not rospy.is_shutdown():
-            ret = self.pm.measure()
-            msg.data = float(ret)
-            self.pub_power.publish(msg)
-            continue
 
     def ave_onoff(self,q):
         self.pm.set_average_onoff(q.data)
@@ -41,7 +35,7 @@ class ml2437a_controller(object):
         msg.data = int(ret)
         self.pub_ave_onoff.publish(msg)
 
-    def ave_count(self):
+    def ave_count(self,q):
         self.pm.set_average_count(q.data)
         ret = self.quary_average_count()
         msg.data = int(ret)
@@ -204,6 +198,13 @@ class ml2437a_deriver(object):
         count = int(ret[19:23])
         self.com.close()
         return count
+
+
+while not rospy.is_shutdown():
+    ret = self.pm.measure()
+    msg.data = float(ret)
+    self.pub_power.publish(msg)
+    continue
 
 if __name__ == "__main__" :
     rospy.init_node("ml2437a")
