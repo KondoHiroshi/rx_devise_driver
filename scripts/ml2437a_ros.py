@@ -18,7 +18,6 @@ from std_msgs.msg import Int32
 class ml2437a_controller(object):
     def __init__(self):
 #self.pm = ML2437A.ml2437a()
-        self.pm = ml2437a_deriver()
 
         self.pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
         self.sub_power = rospy.Subscriber("topic_sub_power", Float64, self.power)
@@ -209,4 +208,5 @@ while not rospy.is_shutdown():
 if __name__ == "__main__" :
     rospy.init_node("ml2437a")
     ctrl = ml2437a_controller()
+    pm = ml2437a_deriver()
     rospy.spin()
