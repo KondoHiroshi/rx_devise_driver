@@ -208,5 +208,5 @@ if __name__ == "__main__" :
 while not rospy.is_shutdown():
     ret = pm.measure()
     msg.data = float(ret)
-    ctrl.pub_power.publish(msg)
+    pub_power.publish(msg)
     continue
