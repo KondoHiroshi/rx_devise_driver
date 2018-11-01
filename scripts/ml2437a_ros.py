@@ -200,13 +200,15 @@ class ml2437a_deriver(object):
 if __name__ == "__main__" :
     rospy.init_node("ml2437a")
     ctrl = ml2437a_controller()
-    print("aaa")
     pm = ml2437a_deriver()
+    print("aaa")
     pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
     rospy.spin()
 
 while not rospy.is_shutdown():
     ret = pm.measure()
     msg.data = float(ret)
+    print("bbb")
     pub_power.publish(msg)
+    print("ccc")
     continue
