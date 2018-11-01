@@ -20,7 +20,7 @@ class ml2437a_controller(object):
 #self.pm = ML2437A.ml2437a()
 
         self.pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
-        self.sub_power = rospy.Subscriber("topic_sub_power", Float64, self.power)
+#self.sub_power = rospy.Subscriber("topic_sub_power", Float64, self.power)
         self.pub_ave_onoff = rospy.Publisher("topic_pub_ave_onoff", Int32, queue_size = 1)
         self.sub_ave_onoff = rospy.Subscriber("topic_sub_ave_onoff", Int32, self.ave_onoff)
         self.pub_ave_count = rospy.Publisher("topic_pub_ave_count", Int32, queue_size = 1)
