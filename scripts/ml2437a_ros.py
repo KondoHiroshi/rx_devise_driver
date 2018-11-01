@@ -51,7 +51,7 @@ class ml2437a_deriver(object):
         Default: 1
     '''
 
-    def __init__(self, IP='192.168.100.1', GPIB=1):
+    def __init__(self, IP='192.168.100.44', GPIB=13):
         self.IP = IP
         self.GPIB = GPIB
         self.com = pymeasure.gpib_prologix(self.IP, self.GPIB)
