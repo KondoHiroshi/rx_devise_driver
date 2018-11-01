@@ -2,8 +2,8 @@
 
 import sys
 import time
-sys.path.append("/home/amigos/ros/src/NASCORX_System-master/NASCORX_System/devise")
-import ML2437A
+sys.path.append("/home/amigos/ros/src/NASCORX_System-master/NASCORX_System")
+from .device import ML2437A
 
 import rospy
 import std_msgs
