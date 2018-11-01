@@ -201,9 +201,9 @@ class ml2437a_deriver(object):
 
 
 while not rospy.is_shutdown():
-    ret = self.pm.measure()
+    ret = pm.measure()
     msg.data = float(ret)
-    self.pub_power.publish(msg)
+    ctrl.pub_power.publish(msg)
     continue
 
 if __name__ == "__main__" :
