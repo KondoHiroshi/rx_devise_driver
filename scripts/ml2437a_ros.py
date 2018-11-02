@@ -50,7 +50,7 @@ class ml2437a_controller(object):
 
     def ave_onoff(self,q):
         self.power_flag = 0
-
+        self.pm.com.readline()
         self.pm.set_average_onoff(q.data)
 
         ret = self.pm.query_average_onoff()
