@@ -2,13 +2,45 @@
 
 import sys
 import time
+
 sys.path.append("/home/amigos/ros/src/NASCORX_System-master")
 import pymeasure
 
 import rospy
+import threading
 import std_msgs
 from std_msgs.msg import Float64
 from std_msgs.msg import String
+from std_msgs.msg import Int32
+
+
+class ml2437a_controller(object):
+    def __init__(self):
+
+        self.pm = ml2437a_driver()
+
+        self.pub_ave_onoff = rospy.Publisher("topic_pub_ave_onoff", Int32, queue_size = 1)
+        self.sub_ave_onoff = rospy.Subscriber("topic_sub_ave_onoff", Int32, self.ave_onoff)
+        self.pub_ave_count = rospy.Publisher("topic_pub_ave_count", Int32, queue_size = 1)
+        self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_count)
+
+
+#method
+    def ave_onoff(self,q):
+
+        self.pm.set_average_onoff(q.data)
+        ret = self.pm.query_average_onoff()
+        msg = Int32()
+        msg.data = int(ret)
+        self.pub_ave_onoff.publish(msg)
+
+    def ave_count(self,q):
+
+        self.pm.set_average_count(q.data)
+        ret = self.pm.query_average_count()
+        msg = Int32()
+        msg.data = int(ret)
+        self.pub_ave_count.publish(msg)
 
 
 class ml2437a_driver(object):
@@ -21,68 +53,112 @@ class ml2437a_driver(object):
         self.com.send('CHUNIT %d, DBM' %(ch))
         self.com.send('CHRES %d, %d' %(ch, resolution))
 
-    def measure(self, ch=1, resolution=3):
-        self.com.send('o %d' %(ch))
-        time.sleep(0.01)
-        ret = self.com.readline()
-        power = float(ret)
-        return power
+    def set_average_onoff(self, onoff, sensor='A'):
+        '''
+        DESCRIPTION
+        ================
+        This function switches the averaging mode.
 
-    def set_avemode(self, mode, ave_num, ch=1):
-#mode:OFF,AUTO,MOV,RPT
-        self.com.send("AVG A, %s, %d" %(mode, ave_num))
-        self.com.close()
+        ARGUMENTS
+        ================
+        1. onoff: averaging mode
+            Number: 0 or 1
+            Type: int
+            Default: Nothing.
+
+        2. sensor: averaging sensor.
+            Number: 'A' or 'B'
+            Type: string
+            Default: 'A'
+
+        RETURNS
+        ================
+        Nothing.
+        '''
+
+        if onoff == 1:
+            self.com.send('AVG %s, RPT, 60' %(sensor))
+        else:
+            self.com.send('AVG %s, OFF, 60' %(sensor))
         return
 
-    def get_avemode(self, ch=1):
-        self.com.send("AVG? A")
-        time.sleep(0.1)
+    def query_average_onoff(self):
+        '''
+        DESCRIPTION
+        ================
+        This function queries the averaging mode.
+
+        ARGUMENTS
+        ================
+        Nothing.
+
+        RETURNS
+        ================
+        1. onoff: averaging mode
+            Number: 0 or 1
+            Type: int
+        '''
+
+        self.com.send('STATUS')
         ret = self.com.readline()
-        self.com.close()
-        ave = float(ret)
-        return ave
+        if ret[17] == '0':
+            ret = 0
+        else:
+            ret = 1
+        return ret
+
+    def set_average_count(self, count, sensor='A'):
+        '''
+        DESCRIPTION
+        ================
+        This function sets the averaging counts.
+
+        ARGUMENTS
+        ================
+        1. count: averaging counts
+            Type: int
+            Default: Nothing.
+
+        2. sensor: averaging sensor.
+            Number: 'A' or 'B'
+            Type: string
+            Default: 'A'
+
+        RETURNS
+        ================
+        Nothing.
+        '''
+
+        self.com.send('AVG %s, RPT, %d' %(sensor, count))
+
+        return
+
+    def query_average_count(self):
+        '''
+        DESCRIPTION
+        ================
+        This function queries the averaging counts.
+
+        ARGUMENTS
+        ================
+        Nothing.
+
+        RETURNS
+        ================
+        1. count: averaging counts
+            Type: int
+        '''
+        self.com.send('STATUS')
+        ret = self.com.readline()
+        count = int(ret[19:23])
+
+        return count
 
 
-def str2list(param):
-    return param.strip('[').strip(']').split(',')
+if __name__ == "__main__" :
+    rospy.init_node("ml2437a")
+    ctrl = ml2437a_controller()
+    rospy.spin()
 
-
-if __name__ == '__main__':
-    node_name = 'ml2437a'
-    rospy.init_node(node_name)
-
-    ch_number = 2
-    topic_name_index = 0
-    onoff_index = 1
-    host = rospy.get_param('~host')
-    port = rospy.get_param('~port')
-    rate = rospy.get_param('~rate')
-    topic_power_list = [str2list(rospy.get_param('~topic{}'.format(i+1))) for i in range(ch_number)]
-    topic_avemode_list = [str2list(rospy.get_param('~topic{}'.format(i+3))) for i in range(ch_number)]
-
-    try:
-        pm = ml2437a_driver(host, port)
-    except OSError as e:
-        rospy.logerr("{e.strerror}. host={host}".format(**locals()))
-        sys.exit()
-
-    pub_power_list = [rospy.Publisher(topic[topic_name_index], Float64, queue_size=1) \
-                for topic in topic_power_list if int(topic[onoff_index]) == 1]
-
-    pub_avemode_list = [rospy.Publisher(topic[topic_name_index], Float64, queue_size=1) \
-                for topic in topic_avemode_list if int(topic[onoff_index]) == 1]
-
-    onoff_list = [topic[topic_name_index] for topic in topic_power_list if int(topic[onoff_index]) == 1]
-
-    msg_power_list = [Float64() for i in range(ch_number)]
-    msg_avemode_list = [String() for i in range(ch_number)]
-
-
-while not rospy.is_shutdown():
-
-    ret_power_list = [pm.measure(ch=int(onoff[-1])) for onoff in onoff_list]
-
-    for pub, msg, ret, i in zip(pub_power_list, msg_power_list, ret_power_list, range(ch_number)):
-        msg.data = ret_power_list[i]
-        pub.publish(msg)
-    continue
+#2018/11/01
+#written by kondo
