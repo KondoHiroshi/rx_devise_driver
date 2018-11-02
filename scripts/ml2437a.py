@@ -24,10 +24,8 @@ class ml2437a_controller(object):
         self.pub_ave_count = rospy.Publisher("topic_pub_ave_count", Int32, queue_size = 1)
         self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_count)
 
-
 #method
     def ave_onoff(self,q):
-
         self.pm.set_average_onoff(q.data)
         ret = self.pm.query_average_onoff()
         msg = Int32()
@@ -35,7 +33,6 @@ class ml2437a_controller(object):
         self.pub_ave_onoff.publish(msg)
 
     def ave_count(self,q):
-
         self.pm.set_average_count(q.data)
         ret = self.pm.query_average_count()
         msg = Int32()
