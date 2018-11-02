@@ -72,7 +72,6 @@ class ml2437a_driver(object):
         self.com.send('CHUNIT %d, DBM' %(ch))
         self.com.send('CHRES %d, %d' %(ch, resolution))
         self.com.send('o %d' %(ch))
-        time.sleep(0.1)
         ret = self.com.readline()
         self.com.close()
         power = float(ret)
@@ -191,12 +190,10 @@ if __name__ == "__main__" :
     ctrl = ml2437a_controller()
     pm = ml2437a_driver()
     pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
-    print("aaa")
 
 while not rospy.is_shutdown():
     ret = pm.measure()
     msg = Float64()
     msg.data = float(ret)
-    print("bbb")
     pub_power.publish(msg)
     continue
