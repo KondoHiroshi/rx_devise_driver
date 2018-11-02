@@ -113,7 +113,7 @@ class ml2437a_driver(object):
         '''
 
         self.com.send('o %d' %(ch))
-        time.sleep(0.01)
+        time.sleep(0.1)
         ret = self.com.readline()
         power = float(ret)
         return power
