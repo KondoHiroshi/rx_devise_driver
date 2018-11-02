@@ -9,6 +9,7 @@ sys.path.append("/home/amigos/ros/src/NASCORX_System-master")
 import pymeasure
 
 import rospy
+import threading
 import std_msgs
 from std_msgs.msg import Float64
 from std_msgs.msg import String
