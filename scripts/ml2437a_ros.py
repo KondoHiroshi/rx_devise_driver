@@ -28,6 +28,7 @@ class ml2437a_controller(object):
 
     def power(self,q):
         while not rospy.is_shutdown:
+            print("aaa")
             while q.data == 0 :
                 print("a")
                 continue
