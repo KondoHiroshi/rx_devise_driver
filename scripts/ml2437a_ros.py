@@ -24,7 +24,7 @@ class ml2437a_controller(object):
         self.pub_ave_onoff = rospy.Publisher("topic_pub_ave_onoff", Int32, queue_size = 1)
         self.sub_ave_onoff = rospy.Subscriber("topic_sub_ave_onoff", Int32, self.ave_onoff)
         self.pub_ave_count = rospy.Publisher("topic_pub_ave_count", Int32, queue_size = 1)
-        self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_onoff)
+        self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_count)
 
     def power(self,q):
         while not rospy.is_shutdown:
