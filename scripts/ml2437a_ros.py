@@ -19,30 +19,43 @@ class ml2437a_controller(object):
     def __init__(self):
 
         self.pm = ml2437a_driver()
-        self.sub_power = rospy.Subscriber("topic_sub_power", Int32, self.power)
+        self.sub_power = rospy.Subscriber("topic_sub_power", Int32, self.power_switch)
         self.pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
         self.pub_ave_onoff = rospy.Publisher("topic_pub_ave_onoff", Int32, queue_size = 1)
         self.sub_ave_onoff = rospy.Subscriber("topic_sub_ave_onoff", Int32, self.ave_onoff)
         self.pub_ave_count = rospy.Publisher("topic_pub_ave_count", Int32, queue_size = 1)
         self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_count)
 
+#fkag
+        self.power_flag = 0
+
+#switch
+    def power_switch(self,q):
+        self.power_flag = q.data
+        return
+
     def power(self,q):
-        while q.data == 0 :
-            continue
-        while q.data == 1 :
-            ret = self.pm.measure()
-            msg = Float64()
-            msg.data = float(ret)
-            self.pub_power.publish(msg)
+        while not rospy.is_shutdown():
+            while self.power_flag == 0 :
+                continue
+            while self.power_flag == 1 :
+                ret = self.pm.measure()
+                msg = Float64()
+                msg.data = float(ret)
+                self.pub_power.publish(msg)
             continue
 
     def ave_onoff(self,q):
+        self.power_flag = 0
+
         self.pm.set_average_onoff(q.data)
 
         ret = self.pm.query_average_onoff()
         msg = Int32()
         msg.data = int(ret)
         self.pub_ave_onoff.publish(msg)
+
+        self.power_flag = 1
 
     def ave_count(self,q):
         self.pm.set_average_count(q.data)
