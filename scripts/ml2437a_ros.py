@@ -51,6 +51,7 @@ class ml2437a_controller(object):
     def ave_onoff(self,q):
         self.power_flag = 0
         time.sleep(1)
+
         self.pm.set_average_onoff(q.data)
 
         ret = self.pm.query_average_onoff()
@@ -61,11 +62,16 @@ class ml2437a_controller(object):
         self.power_flag = 1
 
     def ave_count(self,q):
+        self.power_flag = 0
+        time.sleep(1)
+
         self.pm.set_average_count(q.data)
         ret = self.pm.query_average_count()
         msg = Int32()
         msg.data = int(ret)
         self.pub_ave_count.publish(msg)
+
+        self.power_flag = 1
 
     def start_thread(self):
         th1 = threading.Thread(target=self.power)
@@ -79,6 +85,9 @@ class ml2437a_driver(object):
         self.IP = IP
         self.GPIB = GPIB
         self.com = pymeasure.gpib_prologix(self.IP, self.GPIB)
+        self.com.open()
+        self.com.send('CHUNIT %d, DBM' %(ch))
+        self.com.send('CHRES %d, %d' %(ch, resolution))
 
     def measure(self, ch=1, resolution=3):
         '''
@@ -102,12 +111,9 @@ class ml2437a_driver(object):
         1. power: the power value [dBm]
             Type: float
         '''
-        self.com.open()
-        self.com.send('CHUNIT %d, DBM' %(ch))
-        self.com.send('CHRES %d, %d' %(ch, resolution))
+
         self.com.send('o %d' %(ch))
         ret = self.com.readline()
-        self.com.close()
         power = float(ret)
         return power
 
@@ -134,12 +140,10 @@ class ml2437a_driver(object):
         Nothing.
         '''
 
-        self.com.open()
         if onoff == 1:
             self.com.send('AVG %s, RPT, 60' %(sensor))
         else:
             self.com.send('AVG %s, OFF, 60' %(sensor))
-        self.com.close()
         return
 
     def query_average_onoff(self):
@@ -159,14 +163,12 @@ class ml2437a_driver(object):
             Type: int
         '''
 
-        self.com.open()
         self.com.send('STATUS')
         ret = self.com.readline()
         if ret[17] == '0':
             ret = 0
         else:
             ret = 1
-        self.com.close()
         return ret
 
     def set_average_count(self, count, sensor='A'):
@@ -191,9 +193,8 @@ class ml2437a_driver(object):
         Nothing.
         '''
 
-        self.com.open()
         self.com.send('AVG %s, RPT, %d' %(sensor, count))
-        self.com.close()
+
         return
 
     def query_average_count(self):
@@ -211,11 +212,10 @@ class ml2437a_driver(object):
         1. count: averaging counts
             Type: int
         '''
-        self.com.open()
         self.com.send('STATUS')
         ret = self.com.readline()
         count = int(ret[19:23])
-        self.com.close()
+
         return count
 
 
