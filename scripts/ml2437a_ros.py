@@ -64,6 +64,10 @@ class ml2437a_controller(object):
         msg.data = int(ret)
         self.pub_ave_count.publish(msg)
 
+    def start_thread(self):
+        th1 = threading.Thread(target=self.power)
+        th1.setDaemon(True)
+        th1.start()
 
 
 class ml2437a_driver(object):
@@ -216,4 +220,5 @@ if __name__ == "__main__" :
     rospy.init_node("ml2437a")
     ctrl = ml2437a_controller()
     pm = ml2437a_driver()
+    ctrl.start_thread()
     rospy.spin()
