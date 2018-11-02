@@ -50,7 +50,7 @@ class ml2437a_controller(object):
 
     def ave_onoff(self,q):
         self.power_flag = 0
-        time.sleep(0.1)
+        
         self.pm.set_average_onoff(q.data)
 
         ret = self.pm.query_average_onoff()
@@ -58,7 +58,11 @@ class ml2437a_controller(object):
         msg.data = int(ret)
         self.pub_ave_onoff.publish(msg)
 
-        self.power_flag = 1
+        if ret == q.data :
+            self.power_flag = 1
+        else
+            time.sleep(0.1)
+
 
     def ave_count(self,q):
         self.pm.set_average_count(q.data)
