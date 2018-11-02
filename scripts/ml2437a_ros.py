@@ -116,7 +116,7 @@ class ml2437a_driver(object):
         1. power: the power value [dBm]
             Type: float
         '''
-
+        self.com.send('o %d' %(ch))
         ret = self.com.readline()
         power = float(ret)
         return power
