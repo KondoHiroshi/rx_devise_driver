@@ -224,4 +224,4 @@ if __name__ == "__main__" :
     rospy.spin()
 
 #2018/11/01
-#written by kondo
+#written by H.kondo
