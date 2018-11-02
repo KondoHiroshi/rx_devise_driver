@@ -190,11 +190,12 @@ if __name__ == "__main__" :
     rospy.init_node("ml2437a")
     ctrl = ml2437a_controller()
     pm = ml2437a_driver()
+    pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
     print("aaa")
 
 while not rospy.is_shutdown():
-    pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
     ret = pm.measure()
+    msg = Float64()
     msg.data = float(ret)
     print("bbb")
     pub_power.publish(msg)
