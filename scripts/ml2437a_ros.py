@@ -27,7 +27,7 @@ class ml2437a_controller(object):
         self.pub_ave_count = rospy.Publisher("topic_pub_ave_count", Int32, queue_size = 1)
         self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_count)
 
-#fkag
+#flag
         self.power_flag = 0
 
 #switch
@@ -35,7 +35,7 @@ class ml2437a_controller(object):
         self.power_flag = q.data
         return
 
-    def power(self,q):
+    def power(self):
         while not rospy.is_shutdown():
             while self.power_flag == 0 :
                 continue
