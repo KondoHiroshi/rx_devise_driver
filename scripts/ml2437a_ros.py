@@ -86,7 +86,7 @@ class ml2437a_driver(object):
         self.GPIB = GPIB
         self.com = pymeasure.gpib_prologix(self.IP, self.GPIB)
 
-    def measure(self, ch=1):
+    def measure(self, ch=1, resolution=3):
         '''
         DESCRIPTION
         ================
