@@ -85,6 +85,7 @@ class ml2437a_driver(object):
         self.IP = IP
         self.GPIB = GPIB
         self.com = pymeasure.gpib_prologix(self.IP, self.GPIB)
+        self.com.open()
 
     def measure(self, ch=1, resolution=3):
         '''
@@ -108,7 +109,6 @@ class ml2437a_driver(object):
         1. power: the power value [dBm]
             Type: float
         '''
-        self.com.open()
         self.com.send('CHUNIT %d, DBM' %(ch))
         self.com.send('CHRES %d, %d' %(ch, resolution))
         self.com.send('o %d' %(ch))
