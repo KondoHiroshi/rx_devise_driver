@@ -2,8 +2,6 @@
 
 import sys
 import time
-#sys.path.append("/home/amigos/ros/src/NASCORX_System-master/NASCORX_System")
-#from .device import ML2437A
 
 sys.path.append("/home/amigos/ros/src/NASCORX_System-master")
 import pymeasure
@@ -224,3 +222,6 @@ if __name__ == "__main__" :
     ctrl = ml2437a_controller()
     ctrl.start_thread()
     rospy.spin()
+
+#2018/11/01
+#written by kondo
