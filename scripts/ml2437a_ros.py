@@ -203,3 +203,4 @@ if __name__ == "__main__" :
     rospy.init_node("ml2437a")
     ctrl = ml2437a_controller()
     pm = ml2437a_driver()
+    rospy.spin()
