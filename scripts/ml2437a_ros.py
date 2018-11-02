@@ -27,16 +27,17 @@ class ml2437a_controller(object):
         self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_count)
 
     def power(self,q):
+        print("ABC")
         while not rospy.is_shutdown:
             print("aaa")
             while q.data == 0 :
                 print("a")
                 continue
             while q.data == 1 :
-                ret = pm.measure()
+                ret = self.pm.measure()
                 msg = Float64()
                 msg.data = float(ret)
-                pub_power.publish(msg)
+                self.pub_power.publish(msg)
                 continue
             continue
 
