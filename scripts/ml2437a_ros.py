@@ -88,6 +88,7 @@ class ml2437a_driver(object):
         self.com.open()
         self.com.send('CHUNIT %d, DBM' %(ch))
         self.com.send('CHRES %d, %d' %(ch, resolution))
+        self.com.send('o %d' %(ch))
         a = self.com.readline()
         print(a)
         print(type(a))
@@ -115,7 +116,6 @@ class ml2437a_driver(object):
             Type: float
         '''
 
-        self.com.send('o %d' %(ch))
         ret = self.com.readline()
         power = float(ret)
         return power
