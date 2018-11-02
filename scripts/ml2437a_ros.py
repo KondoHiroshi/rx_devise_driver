@@ -88,13 +88,9 @@ class ml2437a_driver(object):
         self.com.open()
         self.com.send('CHUNIT %d, DBM' %(ch))
         self.com.send('CHRES %d, %d' %(ch, resolution))
-<<<<<<< HEAD
         a = self.com.readline()
         print(a)
         print(type(a))
-=======
-        self.com.readline()
->>>>>>> ccc9a4ec952a4dde7142f500b6462ccd27fad55b
 
     def measure(self, ch=1, resolution=3):
         '''
