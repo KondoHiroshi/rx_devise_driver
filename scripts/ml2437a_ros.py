@@ -19,6 +19,8 @@ from std_msgs.msg import Int32
 class ml2437a_controller(object):
     def __init__(self):
 
+        self.pm = ml2437a_driver()
+
         self.sub_power = rospy.Subscriber("topic_sub_power", Int32, self.power_switch)
         self.pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
         self.pub_ave_onoff = rospy.Publisher("topic_pub_ave_onoff", Int32, queue_size = 1)
@@ -224,6 +226,5 @@ class ml2437a_driver(object):
 if __name__ == "__main__" :
     rospy.init_node("ml2437a")
     ctrl = ml2437a_controller()
-    pm = ml2437a_driver()
     ctrl.start_thread()
     rospy.spin()
