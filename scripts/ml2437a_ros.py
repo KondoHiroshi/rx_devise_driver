@@ -18,7 +18,7 @@ from std_msgs.msg import Int32
 class ml2437a_controller(object):
     def __init__(self):
 #self.pm = ML2437A.ml2437a()
-        self.pm = ml2437a_deriver()
+        self.pm = ml2437a_driver()
 #self.sub_power = rospy.Subscriber("topic_sub_power", Float64, self.power)
         self.pub_ave_onoff = rospy.Publisher("topic_pub_ave_onoff", Int32, queue_size = 1)
         self.sub_ave_onoff = rospy.Subscriber("topic_sub_ave_onoff", Int32, self.ave_onoff)
