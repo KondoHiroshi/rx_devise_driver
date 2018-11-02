@@ -19,63 +19,25 @@ class ml2437a_controller(object):
 
         self.pm = ml2437a_driver()
 
-        self.sub_power = rospy.Subscriber("topic_sub_power", Int32, self.power_switch)
-        self.pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
         self.pub_ave_onoff = rospy.Publisher("topic_pub_ave_onoff", Int32, queue_size = 1)
         self.sub_ave_onoff = rospy.Subscriber("topic_sub_ave_onoff", Int32, self.ave_onoff)
         self.pub_ave_count = rospy.Publisher("topic_pub_ave_count", Int32, queue_size = 1)
         self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_count)
 
-#flag
-        self.power_flag = 1
-
-#switch
-    def power_switch(self,q):
-        self.power_flag = q.data
-        return
-
 #method
-    def power(self):
-        while not rospy.is_shutdown():
-            while self.power_flag == 0 :
-                continue
-            while self.power_flag == 1 :
-                ret = self.pm.measure()
-                msg = Float64()
-                msg.data = float(ret)
-                self.pub_power.publish(msg)
-                continue
-            continue
-
     def ave_onoff(self,q):
-        self.power_flag = 0
-        time.sleep(1)
-
         self.pm.set_average_onoff(q.data)
-
         ret = self.pm.query_average_onoff()
         msg = Int32()
         msg.data = int(ret)
         self.pub_ave_onoff.publish(msg)
 
-        self.power_flag = 1
-
     def ave_count(self,q):
-        self.power_flag = 0
-        time.sleep(1)
-
         self.pm.set_average_count(q.data)
         ret = self.pm.query_average_count()
         msg = Int32()
         msg.data = int(ret)
         self.pub_ave_count.publish(msg)
-
-        self.power_flag = 1
-
-    def start_thread(self):
-        th1 = threading.Thread(target=self.power)
-        th1.setDaemon(True)
-        th1.start()
 
 
 class ml2437a_driver(object):
@@ -87,33 +49,6 @@ class ml2437a_driver(object):
         self.com.open()
         self.com.send('CHUNIT %d, DBM' %(ch))
         self.com.send('CHRES %d, %d' %(ch, resolution))
-
-    def measure(self, ch=1, resolution=3):
-        '''
-        DESCRIPTION
-        ================
-        This function queries the input power level.
-
-        ARGUMENTS
-        ================
-        1. ch: the sensor channel number.
-            Number: 1-2
-            Type: int
-            Default: 1
-        2. resolution: the sensor order of the resolution.
-            Number: 1-3
-            Type: int
-            Default: 3
-
-        RETURNS
-        ================
-        1. power: the power value [dBm]
-            Type: float
-        '''
-        self.com.send('o %d' %(ch))
-        ret = self.com.readline()
-        power = float(ret)
-        return power
 
     def set_average_onoff(self, onoff, sensor='A'):
         '''
@@ -220,7 +155,6 @@ class ml2437a_driver(object):
 if __name__ == "__main__" :
     rospy.init_node("ml2437a")
     ctrl = ml2437a_controller()
-    ctrl.start_thread()
     rospy.spin()
 
 #2018/11/01
