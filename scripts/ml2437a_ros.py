@@ -42,12 +42,14 @@ class ml2437a_controller(object):
         self.pm.set_average_onoff(q.data)
 
         ret = self.pm.query_average_onoff()
+        msg = Int32()
         msg.data = int(ret)
         self.pub_ave_onoff.publish(msg)
 
     def ave_count(self,q):
         self.pm.set_average_count(q.data)
         ret = self.pm.query_average_count()
+        msg = Int32()
         msg.data = int(ret)
         self.pub_ave_count.publish(msg)
 
