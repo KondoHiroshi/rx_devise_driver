@@ -192,7 +192,10 @@ if __name__ == "__main__" :
     pm = ml2437a_driver()
     print("aaa")
     pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
+    print("ccc")
     rospy.spin()
+    print("ddd")
+
 
 while not rospy.is_shutdown():
     print("abc")
@@ -200,5 +203,4 @@ while not rospy.is_shutdown():
     msg.data = float(ret)
     print("bbb")
     pub_power.publish(msg)
-    print("ccc")
     continue
