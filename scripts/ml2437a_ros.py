@@ -35,17 +35,6 @@ class ml2437a_controller(object):
         self.power_flag = q.data
         return
 
-    def power(self):
-        while not rospy.is_shutdown():
-            while self.power_flag == 0 :
-                continue
-            while self.power_flag == 1 :
-                ret = self.pm.measure()
-                msg = Float64()
-                msg.data = float(ret)
-                self.pub_power.publish(msg)
-            continue
-
     def ave_onoff(self,q):
         self.power_flag = 0
 
@@ -223,3 +212,14 @@ if __name__ == "__main__" :
     pm = ml2437a_driver()
     ctrl.start_thread()
     rospy.spin()
+
+while not rospy.is_shutdown():
+    while self.power_flag == 0 :
+        continue
+    while self.power_flag == 1 :
+        ret = self.pm.measure()
+        msg = Float64()
+        msg.data = float(ret)
+        self.pub_power.publish(msg)
+        continue
+    continue
