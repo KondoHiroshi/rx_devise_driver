@@ -26,7 +26,22 @@ class ml2437a_controller(object):
         self.pub_ave_count = rospy.Publisher("topic_pub_ave_count", Int32, queue_size = 1)
         self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_count)
 
+        mode = 'diff'
+        ch = 10
+        self.pub_power = rospy.Publisher('cpz3177_rsw{0}_{1}{2}'.format(rsw_id, mode, ch), Float64, queue_size=1)
+
 #method
+
+    def power(self):
+        while not rospy.is_shutdown():
+            print("a")
+            msg = Float64()
+            ret = ad.input_voltage(ch, mode)
+            msg.data = ret
+            pub.publish(msg)
+            time.sleep(rate)
+            continue
+
     def ave_onoff(self,q):
         self.pm.set_average_onoff(q.data)
         ret = self.pm.query_average_onoff()
@@ -40,6 +55,11 @@ class ml2437a_controller(object):
         msg = Int32()
         msg.data = int(ret)
         self.pub_ave_count.publish(msg)
+
+    def start_thread(self):
+        th1 = threading.Thread(target=self.power)
+        th1.setDaemon(True)
+        th1.start()
 
 
 class ml2437a_driver(object):
@@ -153,25 +173,14 @@ class ml2437a_driver(object):
 
         return count
 
-while not rospy.is_shutdown():
-    print("a")
-    msg = Float64()
-    ret = ad.input_voltage(ch, mode)
-    msg.data = ret
-    pub.publish(msg)
-    time.sleep(rate)
-    continue
+
 
 if __name__ == "__main__" :
     rospy.init_node("ml2437a")
     ctrl = ml2437a_controller()
+    ctrl.start_thread()
     rate = rospy.get_param('~rate')
     rsw_id = rospy.get_param('~rsw_id')
-
-
-    mode = 'diff'
-    ch = 10
-    pub = rospy.Publisher('cpz3177_rsw{0}_{1}{2}'.format(rsw_id, mode, ch), Float64, queue_size=1)
 
     try:
         ad = pyinterface.open(3177, rsw_id)
