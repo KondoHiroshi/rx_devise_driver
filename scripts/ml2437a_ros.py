@@ -6,6 +6,8 @@ import time
 sys.path.append("/home/amigos/ros/src/NASCORX_System-master")
 import pymeasure
 
+import pyinterface
+
 import rospy
 import threading
 import std_msgs
