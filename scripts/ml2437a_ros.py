@@ -35,7 +35,7 @@ class ml2437a_controller(object):
         self.pub_power = rospy.Publisher('cpz3177_rsw{0}_{1}{2}'.format(rsw_id, self.mode, self.ch), Float64, queue_size=1)
         node_name = 'cpz3177'
         try:
-            ad = pyinterface.open(3177, rsw_id)
+            self.ad = pyinterface.open(3177, rsw_id)
         except OSError as e:
             rospy.logerr("{e.strerror}. node={node_name}, rsw={rsw_id}".format(**locals()))
             sys.exit()
@@ -45,7 +45,7 @@ class ml2437a_controller(object):
     def power(self):
         while not rospy.is_shutdown():
             msg = Float64()
-            ret = ad.input_voltage(self.ch, self.mode)
+            ret = self.ad.input_voltage(self.ch, self.mode)
             msg.data = ret
             pub_power.publish(msg)
             time.sleep(self.rate)
