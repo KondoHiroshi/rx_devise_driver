@@ -26,6 +26,7 @@ class ml2437a_controller(object):
         self.pub_ave_count = rospy.Publisher("topic_pub_ave_count", Int32, queue_size = 1)
         self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_count)
 
+        rsw_id = rospy.get_param('~rsw_id')
         mode = 'diff'
         ch = 10
         self.pub_power = rospy.Publisher('cpz3177_rsw{0}_{1}{2}'.format(rsw_id, mode, ch), Float64, queue_size=1)
@@ -179,9 +180,9 @@ if __name__ == "__main__" :
     rospy.init_node("ml2437a")
     ctrl = ml2437a_controller()
     ctrl.start_thread()
-    rate = rospy.get_param('~rate')
-    rsw_id = rospy.get_param('~rsw_id')
 
+    rsw_id = rospy.get_param('~rsw_id')
+    node_name = cpz3177
     try:
         ad = pyinterface.open(3177, rsw_id)
     except OSError as e:
