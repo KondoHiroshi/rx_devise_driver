@@ -47,7 +47,7 @@ class ml2437a_controller(object):
             msg = Float64()
             ret = self.ad.input_voltage(self.ch, self.mode)
             msg.data = ret
-            pub_power.publish(msg)
+            self.pub_power.publish(msg)
             time.sleep(self.rate)
             continue
 
