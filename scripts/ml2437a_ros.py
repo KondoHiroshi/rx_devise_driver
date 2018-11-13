@@ -27,20 +27,26 @@ class ml2437a_controller(object):
         self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_count)
 
         rsw_id = rospy.get_param('~rsw_id')
-        mode = 'diff'
-        ch = 10
+        rate = rospy.get_param('~rate')
+        self.mode = 'diff'
+        self.ch = 10
         self.pub_power = rospy.Publisher('cpz3177_rsw{0}_{1}{2}'.format(rsw_id, mode, ch), Float64, queue_size=1)
+        node_name = cpz3177
+        try:
+            ad = pyinterface.open(3177, rsw_id)
+        except OSError as e:
+            rospy.logerr("{e.strerror}. node={node_name}, rsw={rsw_id}".format(**locals()))
+            sys.exit()
 
 #method
 
     def power(self):
         while not rospy.is_shutdown():
-            print("a")
             msg = Float64()
-            ret = ad.input_voltage(ch, mode)
+            ret = ad.input_voltage(self.ch, self.mode)
             msg.data = ret
             pub.publish(msg)
-            time.sleep(rate)
+            time.sleep(self.rate)
             continue
 
     def ave_onoff(self,q):
@@ -175,20 +181,10 @@ class ml2437a_driver(object):
         return count
 
 
-
 if __name__ == "__main__" :
     rospy.init_node("ml2437a")
     ctrl = ml2437a_controller()
     ctrl.start_thread()
-
-    rsw_id = rospy.get_param('~rsw_id')
-    node_name = cpz3177
-    try:
-        ad = pyinterface.open(3177, rsw_id)
-    except OSError as e:
-        rospy.logerr("{e.strerror}. node={node_name}, rsw={rsw_id}".format(**locals()))
-        sys.exit()
-
     rospy.spin()
 
 
