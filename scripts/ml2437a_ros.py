@@ -153,6 +153,14 @@ class ml2437a_driver(object):
 
         return count
 
+while not rospy.is_shutdown():
+    print("a")
+    msg = Float64()
+    ret = ad.input_voltage(ch, mode)
+    msg.data = ret
+    pub.publish(msg)
+    time.sleep(rate)
+    continue
 
 if __name__ == "__main__" :
     rospy.init_node("ml2437a")
@@ -173,14 +181,6 @@ if __name__ == "__main__" :
 
     rospy.spin()
 
-while not rospy.is_shutdown():
-    print("a")
-    msg = Float64()
-    ret = ad.input_voltage(ch, mode)
-    msg.data = ret
-    pub.publish(msg)
-    time.sleep(rate)
-    continue
 
 #2018/11/01
 #written by H.Kondo
