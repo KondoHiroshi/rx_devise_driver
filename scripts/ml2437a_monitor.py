@@ -16,7 +16,7 @@ if __name__ == '__main__':
     rate = rospy.get_param('~rate')
     rsw_id = rospy.get_param('~rsw_id')
     node_name = 'cpz3177'
-    mode = diff
+    mode = 'diff'
     ch = 10
 
     pub = rospy.Publisher('{0}_rsw{1}_{2}{3}'.format(node_name, rsw_id, mode, ch), Float64, queue_size=1)
