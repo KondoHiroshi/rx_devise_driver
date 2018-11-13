@@ -174,6 +174,7 @@ if __name__ == "__main__" :
     rospy.spin()
 
 while not rospy.is_shutdown():
+    print("a")
     msg = Float64()
     ret = ad.input_voltage(ch, mode)
     msg.data = ret
