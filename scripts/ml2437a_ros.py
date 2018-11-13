@@ -161,7 +161,7 @@ if __name__ == "__main__" :
 
     mode = 'diff'
     ch = 10
-    pub = rospy.Publisher('cpz3177_rsw{1}_{2}{3}'.format(rsw_id, mode, ch), Float64, queue_size=1)
+    pub = rospy.Publisher('cpz3177_rsw{0}_{1}{2}'.format(rsw_id, mode, ch), Float64, queue_size=1)
 
     try:
         ad = pyinterface.open(3177, rsw_id)
