@@ -26,11 +26,11 @@ class ml2437a_controller(object):
         self.pub_ave_count = rospy.Publisher("topic_pub_ave_count", Int32, queue_size = 1)
         self.sub_ave_count = rospy.Subscriber("topic_sub_ave_count", Int32, self.ave_count)
 
-        rsw_id = rospy.get_param('~rsw_id')
-        rate = rospy.get_param('~rate')
+        self.rsw_id = rospy.get_param('~rsw_id')
+        self.rate = rospy.get_param('~rate')
         self.mode = 'diff'
         self.ch = 10
-        self.pub_power = rospy.Publisher('cpz3177_rsw{0}_{1}{2}'.format(rsw_id, mode, ch), Float64, queue_size=1)
+        self.pub_power = rospy.Publisher('cpz3177_rsw{0}_{1}{2}'.format(self.rsw_id, self.mode, self.ch), Float64, queue_size=1)
         node_name = cpz3177
         try:
             ad = pyinterface.open(3177, rsw_id)
