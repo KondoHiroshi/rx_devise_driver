@@ -31,7 +31,7 @@ class ml2437a_controller(object):
         self.mode = 'diff'
         self.ch = 10
         self.pub_power = rospy.Publisher('cpz3177_rsw{0}_{1}{2}'.format(self.rsw_id, self.mode, self.ch), Float64, queue_size=1)
-        node_name = cpz3177
+        node_name = 'cpz3177'
         try:
             ad = pyinterface.open(3177, rsw_id)
         except OSError as e:
