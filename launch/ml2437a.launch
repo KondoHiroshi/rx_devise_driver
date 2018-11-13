@@ -1,8 +1,9 @@
 <launch>
-  <node pkg="rx_device_driver" name="ml2437a" type="ml2437a_ros2.py" required="true" output="screen">
+  <node pkg="rx_device_driver" name="ml2437a" type="ml2437a_ros.py" required="true" output="screen">
     <param name="~host" value="192.168.100.44" />
     <param name="~port" value="13" />
-    <param name="~rate" value="0.1" />
+    <param name="~rate" value="0.001" />
+    <param name="~rsw_id" value="0" />
     <param name="~topic1" value="[ml2437a_ch1, 1]" />
     <param name="~topic2" value="[ml2437a_ch2, 0]" />
   </node>
