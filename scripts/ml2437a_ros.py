@@ -155,19 +155,21 @@ class ml2437a_driver(object):
 if __name__ == "__main__" :
     rospy.init_node("ml2437a")
     ctrl = ml2437a_controller()
-    rospy.spin()
     rate = rospy.get_param('~rate')
     rsw_id = rospy.get_param('~rsw_id')
 
+
     mode = 'diff'
     ch = 10
-    pub = rospy.Publisher('{0}_rsw{1}_{2}{3}'.format(node_name, rsw_id, mode, ch), Float64, queue_size=1)
+    pub = rospy.Publisher('cpz3177_rsw{1}_{2}{3}'.format(rsw_id, mode, ch), Float64, queue_size=1)
 
     try:
         ad = pyinterface.open(3177, rsw_id)
     except OSError as e:
         rospy.logerr("{e.strerror}. node={node_name}, rsw={rsw_id}".format(**locals()))
         sys.exit()
+
+    rospy.spin()
 
 while not rospy.is_shutdown():
     msg = Float64()
