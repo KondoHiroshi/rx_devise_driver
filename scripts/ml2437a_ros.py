@@ -28,7 +28,7 @@ class ml2437a_controller(object):
 
         self.rate = rospy.get_param('~rate')
         self.mode = 'diff'
-        self.ch = 10
+        self.ch = 17
 
         rsw_id = rospy.get_param('~rsw_id')
 
