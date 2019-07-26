@@ -15,7 +15,6 @@ class ma24126a_controller(object):
     def __init__(self):
 
         self.pm = pymeasure.usbpm.open("ma24126a")
-        capt = rospy.get_param("~capt")
 
 #flag
 
@@ -32,7 +31,6 @@ class ma24126a_controller(object):
         self.pm.zero_set()
         print("Finish zero setting !!")
         print("Doing pm setting now")
-        self.pm.change_capt(capt)
 
 #flag
 
