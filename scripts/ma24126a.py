@@ -30,7 +30,6 @@ class ma24126a_controller(object):
         print("Doing zero setting now")
         self.pm.zero_set()
         print("Finish zero setting !!")
-        print("Doing pm setting now")
 
 #flag
 
