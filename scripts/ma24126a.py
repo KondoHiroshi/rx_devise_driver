@@ -8,7 +8,6 @@ import serial
 import time
 import sys,os
 
-sys.path.append("/home/amigos/ros/src")
 import threading
 import pymeasure
 
@@ -33,12 +32,6 @@ class ma24126a_controller(object):
         self.pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
         self.sub_power = rospy.Subscriber("topic_sub_power", Float64, self.power_switch)
         self.pub_power_error = rospy.Publisher("topic_pub_power_error", String, queue_size = 1)
-        self.sub_change_avemode = rospy.Subscriber("topic_sub_change_avemode", Float64, self.avemode_switch)
-        self.pub_change_avemode = rospy.Publisher("topic_pub_change_avemode", Float64, queue_size = 1)
-        self.sub_change_avetyp = rospy.Subscriber("topic_sub_change_avetyp", Float64, self.avetyp_switch)
-        self.pub_change_avetyp = rospy.Publisher("topic_pub_change_avetyp", Float64, queue_size = 1)
-        self.sub_change_capt = rospy.Subscriber("topic_sub_change_capt", Float64, self.capt_switch)
-        self.pub_change_capt = rospy.Publisher("topic_pub_change_capt", Float64, queue_size = 1)
 
 
 #flag
@@ -55,54 +48,30 @@ class ma24126a_controller(object):
         self.power_flag = q.data
         return
 
-    def capt_switch(self,q):
-        self.capt = q.data
-        self.capt_flag = 1
-        return
-
-    def avemode_switch(self,q):
-        self.avemode = q.data
-        self.avemode_flag = 1
-        return
-
-    def avetyp_switch(self,q):
-        self.avetyp = q.data
-        self.avetyp_flag = 1
-        return
-
 #main methond
 
     def zero_set(self):
-        while not rospy.is_shutdown():
-            if self.zero_set_flag == 0:
-                time.sleep(self.rate)
-                continue
 
-            print("zero setting now")
-            self.pm.zero_set()
+        print("zero setting now")
+        self.pm.zero_set()
+        print("zero set has done")
 
-            print("zero set has done")
-
-            self.zero_set_flag = 0
-            continue
+        continue
 
     def power(self):
         while not rospy.is_shutdown():
-            if self.power_flag == 0:
-                continue
 
-            while self.power_flag == 1:
-                msg = Float64()
-                ret = self.pm.quary(b"PWR?\n")
-                time.sleep(0.1)
-                try:
-                    msg.data = float(ret)
-                    self.pub_power.publish(msg)
-                except:
-                    msg = String()
-                    self.pub_power_error.publish(ret)
-                continue
+            msg = Float64()
+            ret = self.pm.quary(b"PWR?\n")
+            time.sleep(0.1)
+            try:
+                msg.data = float(ret)
+                self.pub_power.publish(msg)
+            except:
+                msg = String()
+                self.pub_power_error.publish(ret)
             continue
+        continue
 
     def close(self):
         while not rospy.is_shutdown():
@@ -170,24 +139,18 @@ class ma24126a_controller(object):
         th1 = threading.Thread(target=self.power)
         th1.setDaemon(True)
         th1.start()
-        th2 = threading.Thread(target=self.change_capt)
-        th2.setDaemon(True)
-        th2.start()
-        th3 = threading.Thread(target=self.change_avemode)
-        th3.setDaemon(True)
-        th3.start()
+
         th4 = threading.Thread(target=self.zero_set)
         th4.setDaemon(True)
         th4.start()
         th5 = threading.Thread(target=self.close)
         th5.setDaemon(True)
         th5.start()
-        th6 = threading.Thread(target=self.change_avetyp)
-        th6.setDaemon(True)
-        th6.start()
+
 
 if __name__ == "__main__" :
     rospy.init_node("ma24126a")
     ctrl = ma24126a_controller()
+    ctrl.zero_set()
     ctrl.start_thread()
     rospy.spin()
