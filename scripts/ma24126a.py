@@ -70,7 +70,6 @@ class ma24126a_controller(object):
                 msg = String()
                 self.pub_power_error.publish(ret)
             continue
-        continue
 
     def close(self):
         while not rospy.is_shutdown():
