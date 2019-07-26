@@ -55,8 +55,7 @@ class ma24126a_controller(object):
         print("zero setting now")
         self.pm.zero_set()
         print("zero set has done")
-
-        continue
+        return
 
     def power(self):
         while not rospy.is_shutdown():
