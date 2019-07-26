@@ -18,7 +18,7 @@ class ma24126a_controller(object):
 
 #flag
 
-        self.power_flag = 0
+        self.power_flag = 1
 
 
 #pubsub
