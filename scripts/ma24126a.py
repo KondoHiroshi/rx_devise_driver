@@ -14,7 +14,7 @@ import pymeasure
 class ma24126a_controller(object):
     def __init__(self):
 
-        self.pm = pymeasure_usbpm.usbpm.open("ma24126a")
+        self.pm = pymeasure.usbpm.open("ma24126a")
         capt = rospy.get_param("~capt")
 
 #flag
