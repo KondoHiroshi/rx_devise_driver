@@ -1,6 +1,6 @@
 
 <launch>
-  <node pkg="rx_device_driver" name="ma24126a" type="ma24126a_ros.py" required="true" output="screen">
+  <node pkg="rx_devise_driver" name="ma24126a" type="ma24126a.py" required="true" output="screen">
 
     <param name="~rate" value="0.1" />
 

@@ -29,7 +29,7 @@ class ma24126a_controller(object):
         self.sub_zeroset = rospy.Subscriber("topic_sub_zeroset", Float64, self.zero_set_switch)
         self.pub_close = rospy.Publisher("topic_pub_close", String, queue_size = 1)
         self.sub_close = rospy.Subscriber("topic_sub_close", Float64, self.close_switch)
-        self.pub_power = rospy.Publisher("topic_pub_power", Float64, queue_size = 1)
+        self.pub_power = rospy.Publisher("/dev/ma24126a/power", Float64, queue_size = 1)
         self.sub_power = rospy.Subscriber("topic_sub_power", Float64, self.power_switch)
         self.pub_power_error = rospy.Publisher("topic_pub_power_error", String, queue_size = 1)
 
